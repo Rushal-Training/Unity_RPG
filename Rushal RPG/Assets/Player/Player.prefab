@@ -893,7 +893,6 @@ GameObject:
   - component: {fileID: 95082213516154408}
   - component: {fileID: 54867559281616712}
   - component: {fileID: 136901755028746204}
-  - component: {fileID: 114891918621528858}
   - component: {fileID: 114835391153603578}
   - component: {fileID: 114136499493190846}
   m_Layer: 0
@@ -2515,20 +2514,9 @@ MonoBehaviour:
   m_JumpPower: 8
   m_GravityMultiplier: 2
   m_RunCycleLegOffset: 0.2
-  m_MoveSpeedMultiplier: 4
-  m_AnimSpeedMultiplier: 1.2
+  m_MoveSpeedMultiplier: 0.7
+  m_AnimSpeedMultiplier: 1.5
   m_GroundCheckDistance: 0.3
---- !u!114 &114891918621528858
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1601004360757376}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 521b611700410be45810047f0a74e899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!136 &136901755028746204
 CapsuleCollider:
   m_ObjectHideFlags: 1
