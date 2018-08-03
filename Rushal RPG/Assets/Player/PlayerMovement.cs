@@ -16,8 +16,10 @@ public class PlayerMovement : MonoBehaviour
 
 	private void Start()
     {
-        cameraRaycaster = Camera.main.GetComponent<CameraRaycaster>();
-        thirdPersonCharacter = GetComponent<ThirdPersonCharacter>();
+		cameraRaycaster = Camera.main.GetComponent<CameraRaycaster>();
+
+
+		thirdPersonCharacter = GetComponent<ThirdPersonCharacter>();
         currentDestination = transform.position;
     }
 
@@ -35,7 +37,7 @@ public class PlayerMovement : MonoBehaviour
 		}
 		else
 		{
-			ProcessMouseMovement();
+			//ProcessMouseMovement();
 		}
 	}
 
@@ -50,7 +52,7 @@ public class PlayerMovement : MonoBehaviour
 		thirdPersonCharacter.Move( movement, false, false );
 	}
 
-	private void ProcessMouseMovement()
+	/*private void ProcessMouseMovement( RaycastHit raycastHit, int layerHit )
 	{
 		if ( Input.GetMouseButton ( 0 ) )
 		{
@@ -70,7 +72,7 @@ public class PlayerMovement : MonoBehaviour
 		}
 
 		WalkToDestination ();
-	}
+	}*/
 
 	private void WalkToDestination ()
 	{

@@ -5,6 +5,9 @@ using UnityEngine;
 [RequireComponent ( typeof ( CameraRaycaster ) )]
 public class CursorAffordance : MonoBehaviour
 {
+	[SerializeField] const int walkableLayerNumber = 9;
+	[SerializeField] const int enemyLayerNumber = 10;
+
 	[SerializeField] Texture2D walkCursor = null;
 	[SerializeField] Texture2D targetCursor = null;
 	[SerializeField] Texture2D unknownCursor = null;
@@ -13,27 +16,24 @@ public class CursorAffordance : MonoBehaviour
 
 	CameraRaycaster cameraRaycaster;
 
-	void Start () // TODO Consider deregistering OnLayerChanged when leacing all game scenes
+	void Start () // TODO Consider deregistering OnLayerChanged when leaving all game scenes
 	{
 		cameraRaycaster = GetComponent<CameraRaycaster> ();
-		cameraRaycaster.layerChangeObservers += OnLayerChange;
+		cameraRaycaster.notifyLayerChangeObservers += OnLayerChange;
 	}
 	
-	void OnLayerChange (Layer newLayer)
+	void OnLayerChange (int newLayer)
 	{
 		switch(newLayer)
 		{
-			case Layer.Walkable:
+			case walkableLayerNumber:
 				Cursor.SetCursor ( walkCursor, cursorHotspot, CursorMode.Auto );
 				break;
-			case Layer.Enemy:
+			case enemyLayerNumber:
 				Cursor.SetCursor ( targetCursor, cursorHotspot, CursorMode.Auto );
 				break;
-			case Layer.RaycastEndStop:
-				Cursor.SetCursor ( unknownCursor, cursorHotspot, CursorMode.Auto );
-				break;
 			default:
-				Debug.LogError ( "Don't know what cursor to show" );
+				Cursor.SetCursor ( unknownCursor, cursorHotspot, CursorMode.Auto );
 				break;
 		}
 	}
