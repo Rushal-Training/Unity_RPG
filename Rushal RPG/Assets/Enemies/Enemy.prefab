@@ -2771,7 +2771,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealthPoints: 100
-  attackRadius: 5
+  attackRadius: 10
 --- !u!195 &195293651870409690
 NavMeshAgent:
   m_ObjectHideFlags: 1
