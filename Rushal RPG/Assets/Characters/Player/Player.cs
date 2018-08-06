@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,19 +10,35 @@ public class Player : MonoBehaviour, IDamagable
 	[SerializeField] float meleeDamagePerClick = 10f;
 	[SerializeField] float minTimeBetweeHits = 0.5f;
 	[SerializeField] float maxAttackRange = 2f;
+	[SerializeField] Weapon weaponInUse;
 
 	CameraRaycaster cameraRaycaster;
 	GameObject currentTarget;
 	float currentHealthPoints;
 	float lastHitTime = 0f;
 
-	void Start () {
-		cameraRaycaster = FindObjectOfType<CameraRaycaster>();
-		cameraRaycaster.notifyMouseClickObservers += OnMouseClick;
+	void Start ()
+	{
+		RegisterForMouseClick ();
 
 		currentHealthPoints = maxHealthPoints;
+
+		PutWeaponInHand ();
 	}
-	
+
+	private void RegisterForMouseClick ()
+	{
+		cameraRaycaster = FindObjectOfType<CameraRaycaster> ();
+		cameraRaycaster.notifyMouseClickObservers += OnMouseClick;
+	}
+
+	private void PutWeaponInHand ()
+	{
+		var weaponPrefab = weaponInUse.GetWeaponPrefab ();
+		var weapon = Instantiate ( weaponPrefab );
+		// TODO child to had and rotate
+	}
+
 	void Update () {
 		
 	}
