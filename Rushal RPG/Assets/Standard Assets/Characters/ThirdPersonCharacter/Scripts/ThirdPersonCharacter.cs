@@ -68,7 +68,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 				HandleAirborneMovement();
 			}
 
-			ScaleCapsuleForCrouching(crouch);
+			//ScaleCapsuleForCrouching(crouch);
 			//PreventStandingInLowHeadroom();
 
 			// send input and other state parameters to the animator
@@ -76,7 +76,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 		}
 
 
-		void ScaleCapsuleForCrouching(bool crouch)
+		/*void ScaleCapsuleForCrouching(bool crouch)
 		{
 			if (m_IsGrounded && crouch)
 			{
@@ -112,7 +112,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 					m_Crouching = true;
 				}
 			}
-		}
+		}*/
 
 
 		void UpdateAnimator(Vector3 move)
