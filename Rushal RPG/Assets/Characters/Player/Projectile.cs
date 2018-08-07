@@ -4,9 +4,19 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-	public float projectileSpeed;
-
+	[SerializeField] float projectileSpeed;
+	int parentLayer;
 	float damageCaused;
+
+	public float GetDefaultLaunchSpeed ()
+	{
+		return projectileSpeed;
+	}
+
+	public void SetParentLayer( GameObject parent )
+	{
+		parentLayer = parent.layer;
+	}
 
 	public void SetDamage ( float damage )
 	{
@@ -16,7 +26,8 @@ public class Projectile : MonoBehaviour
 	private void OnCollisionEnter( Collision collision )
 	{
 		IDamagable damagableComponent = collision.gameObject.GetComponent<IDamagable>();
-		if ( damagableComponent != null )
+		var collisionLayer = collision.gameObject.layer;
+		if ( damagableComponent != null && parentLayer != collisionLayer )
 		{
 			damagableComponent.TakeDamage( damageCaused );
 		}

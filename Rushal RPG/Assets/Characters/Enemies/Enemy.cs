@@ -67,14 +67,16 @@ public class Enemy : MonoBehaviour, IDamagable
 
 	}
 
+	// TODO separate character firing logic
 	void SpawnProjectile ()
 	{
 		GameObject projectile = Instantiate( projectileToUse, projectileSocket.transform.position, Quaternion.identity );
 		Projectile projectileComponent = projectile.GetComponent<Projectile>();
 		projectileComponent.SetDamage( damagePerShot );
+		projectileComponent.SetParentLayer( gameObject );
 
 		Vector3 unitVectorToPlayer = ( player.transform.position + aimOffset - projectileSocket.transform.position ).normalized;
-		float projectileSpeed = projectileComponent.projectileSpeed;
+		float projectileSpeed = projectileComponent.GetDefaultLaunchSpeed();
 		projectile.GetComponent<Rigidbody>().velocity = unitVectorToPlayer * projectileSpeed;
 	}
 
