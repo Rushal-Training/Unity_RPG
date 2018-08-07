@@ -14,7 +14,7 @@ public class PlayerMovement : MonoBehaviour
 	ThirdPersonCharacter thirdPersonCharacter;   // A reference to the ThirdPersonCharacter on the object
 	AICharacterControl aiCharacterControl = null;
 	CameraRaycaster cameraRaycaster;
-    Vector3 currentDestination, clickPoint;
+    Vector3 clickPoint;
 	GameObject walkTarget;
 
 	bool isInDirectMode = false; // TODO consider making static
@@ -26,7 +26,6 @@ public class PlayerMovement : MonoBehaviour
 
 		aiCharacterControl = GetComponent<AICharacterControl> ();
 		thirdPersonCharacter = GetComponent<ThirdPersonCharacter>();
-        currentDestination = transform.position;
 		walkTarget = new GameObject ( "WalkTarget" );
     }
 

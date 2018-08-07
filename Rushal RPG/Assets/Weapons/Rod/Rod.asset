@@ -11,6 +11,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f9d5c309aa4baa489f3456035105863, type: 3}
   m_Name: Rod
   m_EditorClassIdentifier: 
+  gripTransform: {fileID: 4852165023856886, guid: 261e22fb972d2dc409955dc3ce040d2c,
+    type: 2}
   weaponPrefab: {fileID: 1434759642908986, guid: 9d8fa06f842451a49b96d2b657b5a3db,
     type: 2}
   attackAnimation: {fileID: 0}
