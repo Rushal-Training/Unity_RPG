@@ -32,7 +32,7 @@ namespace RPG.Characters
 			float newEnergyPoints = currentEnergyPoints - pointsPerHit;
 			currentEnergyPoints = Mathf.Clamp ( newEnergyPoints, 0, maxEnergyPoints );
 
-			float xValue = -( currentEnergyPoints / 2f) - 0.5f;
+			float xValue = -( ( currentEnergyPoints / maxEnergyPoints ) / 2f) - 0.5f;
 			energyBar.uvRect = new Rect ( xValue, 0f, 0.5f, 1f );
 		}
 	}
