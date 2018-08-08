@@ -18,7 +18,7 @@ namespace RPG.Characters
 		void Start ()
 		{
 			cameraRaycaster = FindObjectOfType<CameraRaycaster> ();
-			cameraRaycaster.notifyRightMouseClickObservers += ProcessMouseClick;
+			cameraRaycaster.OnMouseOverEnemyObservers += OnMouseOverEnemy;
 			currentEnergyPoints = maxEnergyPoints;
 		}
 
@@ -27,13 +27,16 @@ namespace RPG.Characters
 
 		}
 
-		void ProcessMouseClick ( RaycastHit raycastHit, int layerHit )
+		void OnMouseOverEnemy ( Enemy enemy )
 		{
-			float newEnergyPoints = currentEnergyPoints - pointsPerHit;
-			currentEnergyPoints = Mathf.Clamp ( newEnergyPoints, 0, maxEnergyPoints );
+			if ( Input.GetMouseButtonDown ( 1 ) )
+			{
+				float newEnergyPoints = currentEnergyPoints - pointsPerHit;
+				currentEnergyPoints = Mathf.Clamp ( newEnergyPoints, 0, maxEnergyPoints );
 
-			float xValue = -( ( currentEnergyPoints / maxEnergyPoints ) / 2f) - 0.5f;
-			energyBar.uvRect = new Rect ( xValue, 0f, 0.5f, 1f );
+				float xValue = -((currentEnergyPoints / maxEnergyPoints) / 2f) - 0.5f;
+				energyBar.uvRect = new Rect ( xValue, 0f, 0.5f, 1f );
+			}			
 		}
 	}
 }

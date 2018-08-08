@@ -13,7 +13,6 @@ namespace RPG.Characters
 {
 	public class Player : MonoBehaviour, IDamagable
 	{
-		[SerializeField] int enemyLayer = 10;
 		[SerializeField] float maxHealthPoints = 100f;
 		[SerializeField] float meleeDamagePerClick = 10f;
 
@@ -29,6 +28,11 @@ namespace RPG.Characters
 		{
 			currentHealthPoints = Mathf.Clamp ( currentHealthPoints - damage, 0f, maxHealthPoints );
 			//if ( currentHealthPoints <= 0 ) { Destroy( gameObject );  }
+		}
+
+		public float healthAsPercentage
+		{
+			get { return currentHealthPoints / maxHealthPoints;	}
 		}
 
 		void Start ()
@@ -54,7 +58,15 @@ namespace RPG.Characters
 		private void RegisterForMouseClick ()
 		{
 			cameraRaycaster = FindObjectOfType<CameraRaycaster> ();
-			cameraRaycaster.notifyMouseClickObservers += OnMouseClick;
+			cameraRaycaster.OnMouseOverEnemyObservers += OnMouseOverEnemy;
+		}
+
+		void OnMouseOverEnemy ( Enemy enemy )
+		{
+			if (Input.GetMouseButton( 0 ) && IsTargetInRange ( enemy.gameObject ) )
+			{
+				AttackTarget ( enemy );
+			}
 		}
 
 		private void PutWeaponInHand ()
@@ -75,39 +87,18 @@ namespace RPG.Characters
 			return dominantHands [0].gameObject;
 		}
 
-		public float healthAsPercentage
-		{
-			get
-			{
-				return currentHealthPoints / maxHealthPoints;
-			}
-		}
-
-		void OnMouseClick ( RaycastHit raycastHit, int layerHit )
-		{
-			if ( layerHit == enemyLayer )
-			{
-				var enemy = raycastHit.collider.gameObject;
-
-				if ( IsTargetInRange( enemy ) )
-				{
-					AttackTarget ( enemy );
-				}
-			}
-		}
-
 		private bool IsTargetInRange ( GameObject target )
 		{
 			float distanceToTarget = (target.transform.position - transform.position).magnitude;
 			return distanceToTarget <= weaponInUse.GetMaxAttackRange();
 		}
 
-		private void AttackTarget ( GameObject target  )
+		private void AttackTarget ( Enemy enemy  )
 		{
-			Vector3 faceTheEnemy = (target.transform.position - transform.position);
+			Vector3 faceTheEnemy = (enemy.transform.position - transform.position);
 			transform.rotation = Quaternion.Slerp ( transform.rotation, Quaternion.LookRotation ( faceTheEnemy ), 0.2f );
 
-			IDamagable damagableComponent = target.GetComponent<IDamagable> ();
+			IDamagable damagableComponent = enemy.GetComponent<IDamagable> ();
 			if ( damagableComponent != null && Time.time - lastHitTime > weaponInUse.GetMinTimeBetweenHits() )
 			{
 				animator.SetTrigger ( "Attack" );

@@ -11,9 +11,6 @@ namespace RPG.Characters
 	[RequireComponent ( typeof ( ThirdPersonCharacter ) )]
 	public class PlayerMovement : MonoBehaviour
 	{
-		[SerializeField] const int walkableLayerNumber = 9;
-		[SerializeField] const int enemyLayerNumber = 10;
-
 		ThirdPersonCharacter thirdPersonCharacter;   // A reference to the ThirdPersonCharacter on the object
 		AICharacterControl aiCharacterControl = null;
 		CameraRaycaster cameraRaycaster;
@@ -25,31 +22,30 @@ namespace RPG.Characters
 		private void Start ()
 		{
 			cameraRaycaster = Camera.main.GetComponent<CameraRaycaster> ();
-			cameraRaycaster.notifyMouseClickObservers += ProcessMouseClick;
+			cameraRaycaster.OnMouseOverPotentiallyWalkable += OnMouseOverPotentiallyWalkable;
+			cameraRaycaster.OnMouseOverEnemyObservers += OnMouseOverEnemy;
 
 			aiCharacterControl = GetComponent<AICharacterControl> ();
 			thirdPersonCharacter = GetComponent<ThirdPersonCharacter> ();
 			walkTarget = new GameObject ( "WalkTarget" );
 		}
 
-		void ProcessMouseClick ( RaycastHit raycastHit, int layerHit )
+		void OnMouseOverPotentiallyWalkable ( Vector3 destination )
 		{
-			switch ( layerHit )
+			if ( Input.GetMouseButton ( 0 ) )
 			{
-				case enemyLayerNumber:
-					GameObject enemy = raycastHit.collider.gameObject;
-					aiCharacterControl.SetTarget ( enemy.transform );
-					break;
-				case walkableLayerNumber:
-					walkTarget.transform.position = raycastHit.point;
-					aiCharacterControl.SetTarget ( walkTarget.transform );
-					break;
-				default:
-					Debug.LogWarning ( "Don't know how to handle mouse click for player" );
-					return;
+				walkTarget.transform.position = destination;
+				aiCharacterControl.SetTarget ( walkTarget.transform );
 			}
 		}
 
+		void OnMouseOverEnemy ( Enemy enemy )
+		{
+			if ( Input.GetMouseButton ( 0 ) || Input.GetMouseButtonDown ( 1 ) )
+			{
+				aiCharacterControl.SetTarget ( enemy.transform );
+			}
+		}
 
 		// TODO make this get called again
 		private void ProcessDirectMovement ()
@@ -62,7 +58,5 @@ namespace RPG.Characters
 
 			thirdPersonCharacter.Move ( movement, false, false );
 		}
-
-
 	}
 }
