@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityStandardAssets.Characters.ThirdPerson;
 using RPG.CameraUI; // TODO consider rewiring
 
 namespace RPG.Characters

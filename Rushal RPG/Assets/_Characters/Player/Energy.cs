@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,6 +10,7 @@ namespace RPG.Characters
 	{
 		[SerializeField] RawImage energyBar = null;
 		[SerializeField] float maxEnergyPoints = 100f;
+		[SerializeField] float regenPointsPerSecond = 10f;
 
 		float currentEnergyPoints;
 
@@ -19,7 +21,17 @@ namespace RPG.Characters
 
 		void Update ()
 		{
+			if ( currentEnergyPoints < maxEnergyPoints )
+			{
+				RegenerateEnergy ();
+			}
+		}
 
+		private void RegenerateEnergy ()
+		{
+			float newEnergyPoints = currentEnergyPoints + regenPointsPerSecond * Time.deltaTime;
+			currentEnergyPoints = Mathf.Clamp ( newEnergyPoints, 0, maxEnergyPoints );
+			UpdateEnergyBar ();
 		}
 
 		public bool IsEnergyAvailable ( float amount )
