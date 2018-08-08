@@ -14,12 +14,12 @@ namespace RPG.Characters
 	public class Player : MonoBehaviour, IDamagable
 	{
 		[SerializeField] float maxHealthPoints = 100f;
-		[SerializeField] float meleeDamagePerClick = 10f;
+		[SerializeField] float baseDamage = 10f;
 
 		[SerializeField] Weapon weaponInUse = null;
 		[SerializeField] AnimatorOverrideController animatorOverrideController = null;
 
-		[SerializeField] SpecialAbilityConfig ability1;
+		[SerializeField] SpecialAbility[] abilities;
 
 		Animator animator;
 		CameraRaycaster cameraRaycaster;
@@ -44,7 +44,7 @@ namespace RPG.Characters
 			PutWeaponInHand ();
 			SetupRuntimeAnimator ();
 
-			ability1.AddComponent ( gameObject );
+			abilities[0].AttachComponentTo ( gameObject );
 		}
 
 		private void SetCurrentMaxHealth ()
@@ -73,18 +73,21 @@ namespace RPG.Characters
 			}
 			else if ( Input.GetMouseButtonDown ( 1 ) ) //TODO check for ability range
 			{
-				AttemptSpecialAbility1 ( enemy );
+				AttemptSpecialAbility (0, enemy );
 			}
 		}
 
-		private void AttemptSpecialAbility1 ( Enemy enemy )
+		private void AttemptSpecialAbility (int abilityIndex, Enemy enemy )
 		{
 			var energyComponent = GetComponent<Energy> ();
+			var energyCost = abilities [abilityIndex].GetEnergyCost ();
 
-			if (energyComponent.IsEnergyAvailable(10f)) //TODO read from ability config file
+			if (energyComponent.IsEnergyAvailable( energyCost ) )
 			{
-				energyComponent.ConsumeEnergy ( 10f );
-				//use ability
+				energyComponent.ConsumeEnergy ( energyCost );
+
+				var abilityParams = new AbilityUseParams ( enemy, baseDamage );
+				abilities [abilityIndex].Use ( abilityParams );				
 			}
 		}
 
@@ -120,8 +123,8 @@ namespace RPG.Characters
 			IDamagable damagableComponent = enemy.GetComponent<IDamagable> ();
 			if ( damagableComponent != null && Time.time - lastHitTime > weaponInUse.GetMinTimeBetweenHits() )
 			{
-				animator.SetTrigger ( "Attack" );
-				damagableComponent.TakeDamage ( meleeDamagePerClick );
+				animator.SetTrigger ( "Attack" ); // TODO make const
+				damagableComponent.TakeDamage ( baseDamage );
 				lastHitTime = Time.time;
 			}
 		}

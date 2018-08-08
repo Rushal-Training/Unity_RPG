@@ -1639,7 +1639,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   energyBar: {fileID: 1778642033}
   maxEnergyPoints: 100
-  pointsPerHit: 10
 --- !u!4 &1190478556 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4982564671146732, guid: 0808e7152c771334d90d6ca8d6821b7a,
@@ -1746,6 +1745,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114971019616710268, guid: ca5c32c4ee1669447a051d719d5ebbbc,
+        type: 2}
+      propertyPath: abilities.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4985233958605320, guid: ca5c32c4ee1669447a051d719d5ebbbc, type: 2}
       propertyPath: m_LocalPosition.x
       value: -233.15242
@@ -1791,6 +1795,12 @@ Prefab:
     - target: {fileID: 114971019616710268, guid: ca5c32c4ee1669447a051d719d5ebbbc,
         type: 2}
       propertyPath: ability1
+      value: 
+      objectReference: {fileID: 11400000, guid: 8046dc2b7c8983a489ef5dbe838bec94,
+        type: 2}
+    - target: {fileID: 114971019616710268, guid: ca5c32c4ee1669447a051d719d5ebbbc,
+        type: 2}
+      propertyPath: abilities.Array.data[0]
       value: 
       objectReference: {fileID: 11400000, guid: 8046dc2b7c8983a489ef5dbe838bec94,
         type: 2}

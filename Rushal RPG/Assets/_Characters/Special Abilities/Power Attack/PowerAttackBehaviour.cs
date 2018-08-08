@@ -7,7 +7,6 @@ namespace RPG.Characters
 {
 	public class PowerAttackBehaviour : MonoBehaviour, ISpecialAbility
 	{
-
 		PowerAttackConfig config;
 
 		public void SetConfig( PowerAttackConfig configToSet )
@@ -25,9 +24,11 @@ namespace RPG.Characters
 
 		}
 
-		public void Use ()
+		public void Use ( AbilityUseParams useParams )
 		{
-
+			print ( "Power attack used by " + gameObject.name );
+			float damageToDeal = useParams.baseDamage + config.GetExtraDamage ();
+			useParams.target.TakeDamage ( damageToDeal );
 		}
 	}
 }
