@@ -1,56 +1,65 @@
 fileFormatVersion: 2
-guid: 8d0a57b326030fc44ad6eeab6f398c6a
-timeCreated: 1489450359
+guid: 867694a5858127940bb9ecb81fec5742
+timeCreated: 1493914631
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
-    100000: Armature
-    100002: Foot_L
-    100004: Foot_R
-    100006: Hand_L
-    100008: Hand_R
-    100010: Head
-    100012: //RootNode
-    100014: Hero
-    100016: Hips
-    100018: Lower_Arm_L
-    100020: Lower_Arm_R
-    100022: Lower_Leg_l
-    100024: Lower_Leg_r
-    100026: Neck
-    100028: Shoulder_L
-    100030: Shoulder_R
-    100032: Spine
-    100034: Upper_Arm_L
-    100036: Upper_Arm_R
-    100038: Upper_Leg_L
-    100040: Upper_Leg_R
-    400000: Armature
-    400002: Foot_L
-    400004: Foot_R
-    400006: Hand_L
-    400008: Hand_R
-    400010: Head
-    400012: //RootNode
-    400014: Hero
-    400016: Hips
-    400018: Lower_Arm_L
-    400020: Lower_Arm_R
-    400022: Lower_Leg_l
-    400024: Lower_Leg_r
-    400026: Neck
-    400028: Shoulder_L
-    400030: Shoulder_R
-    400032: Spine
-    400034: Upper_Arm_L
-    400036: Upper_Arm_R
-    400038: Upper_Leg_L
-    400040: Upper_Leg_R
+    100000: //RootNode
+    100002: Armature
+    100004: Arrows
+    100006: Foot_L
+    100008: Foot_R
+    100010: Hand_L
+    100012: Hand_R
+    100014: Head
+    100016: Hero
+    100018: Hips
+    100020: Lower_Arm_L
+    100022: Lower_Arm_R
+    100024: Lower_Leg_l
+    100026: Lower_Leg_r
+    100028: Neck
+    100030: Shoulder_L
+    100032: Shoulder_R
+    100034: Spine
+    100036: Upper_Arm_L
+    100038: Upper_Arm_R
+    100040: Upper_Leg_L
+    100042: Upper_Leg_R
+    100044: Archer
+    400000: //RootNode
+    400002: Armature
+    400004: Arrows
+    400006: Foot_L
+    400008: Foot_R
+    400010: Hand_L
+    400012: Hand_R
+    400014: Head
+    400016: Hero
+    400018: Hips
+    400020: Lower_Arm_L
+    400022: Lower_Arm_R
+    400024: Lower_Leg_l
+    400026: Lower_Leg_r
+    400028: Neck
+    400030: Shoulder_L
+    400032: Shoulder_R
+    400034: Spine
+    400036: Upper_Arm_L
+    400038: Upper_Arm_R
+    400040: Upper_Leg_L
+    400042: Upper_Leg_R
+    400044: Archer
+    2300000: Arrows
+    3300000: Arrows
     4300000: Hero
+    4300002: Arrows
+    4300004: Archer
     7400000: Default Take
     9500000: //RootNode
     13700000: Hero
+    13700002: Archer
   materials:
     importMaterials: 0
     materialName: 0
@@ -61,6 +70,8 @@ ModelImporter:
     resampleCurves: 1
     optimizeGameObjects: 0
     motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
@@ -244,13 +255,13 @@ ModelImporter:
         length: 0
         modified: 0
     skeleton:
-    - name: Hero(Clone)
+    - name: Archer(Clone)
       parentName: 
       position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: Armature
-      parentName: Hero(Clone)
+      parentName: Archer(Clone)
       position: {x: -0.00033110008, y: 0.769954, z: -0.05907217}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
@@ -302,16 +313,16 @@ ModelImporter:
     - name: Upper_Arm_L
       parentName: Shoulder_L
       position: {x: -0.17493093, y: 0.000000009313226, z: 0.000000090978574}
-      rotation: {x: 0.87890965, y: 0.060394004, z: 0.031387042, w: -0.47210723}
+      rotation: {x: 0.87890965, y: 0.06039402, z: 0.031387053, w: -0.47210723}
       scale: {x: 0.9999998, y: 0.99999994, z: 1}
     - name: Lower_Arm_L
       parentName: Upper_Arm_L
-      position: {x: -0.3355617, y: -0.0000000433065, z: -0.000000020489097}
+      position: {x: -0.33556172, y: 0.000000002328306, z: 0.000000004656613}
       rotation: {x: -0.5039006, y: -0.0057349084, z: 0.035544634, w: 0.86301094}
       scale: {x: 1.0000001, y: 1.0000001, z: 0.99999994}
     - name: Hand_L
       parentName: Lower_Arm_L
-      position: {x: -0.25373262, y: 0.000000015832484, z: 0.000000044536137}
+      position: {x: -0.25373262, y: 0.000000014901161, z: 0.00000002172601}
       rotation: {x: 0.9995421, y: -0.017641943, z: -0.0071373354, w: -0.023524283}
       scale: {x: 1.0000002, y: 0.99999994, z: 0.9999999}
     - name: Shoulder_R
@@ -322,17 +333,17 @@ ModelImporter:
     - name: Upper_Arm_R
       parentName: Shoulder_R
       position: {x: -0.1631107, y: 0.000000019557774, z: -0.000000045634806}
-      rotation: {x: 0.5858807, y: -0.0769871, z: 0.015305396, w: 0.806587}
+      rotation: {x: 0.5858807, y: -0.07698711, z: 0.015305409, w: 0.806587}
       scale: {x: 1, y: 1, z: 0.99999994}
     - name: Lower_Arm_R
       parentName: Upper_Arm_R
-      position: {x: -0.35240442, y: 0.000000001236913, z: 0}
+      position: {x: -0.35240442, y: 0.000000016112608, z: -9.31323e-10}
       rotation: {x: -0.70584583, y: 0.041727986, z: 0.015026932, w: 0.70697576}
       scale: {x: 1, y: 1.0000001, z: 1}
     - name: Hand_R
       parentName: Lower_Arm_R
-      position: {x: -0.24838483, y: 0.000000015366822, z: -0.000000061423634}
-      rotation: {x: -0.0057543367, y: -0.02659696, z: -0.014059943, w: 0.9995308}
+      position: {x: -0.24838482, y: 0.000000019557774, z: -0.000000038649887}
+      rotation: {x: -0.0057543376, y: -0.02659696, z: -0.014059944, w: 0.9995308}
       scale: {x: 1.0000001, y: 1, z: 1.0000001}
     - name: Neck
       parentName: Spine
@@ -345,11 +356,16 @@ ModelImporter:
       rotation: {x: -0.68567365, y: 0.13293058, z: -0.1295857, w: 0.7038385}
       scale: {x: 0.9999999, y: 1, z: 1}
     - name: Hero
-      parentName: Hero(Clone)
+      parentName: Archer(Clone)
       position: {x: 0.00033110008, y: -0.769954, z: 0.05907217}
       rotation: {x: 1.9973712e-21, y: -0.00000035762793, z: 5.5850536e-15, w: 1}
       scale: {x: 1, y: 1, z: 1}
-    armTwist: 0.396
+    - name: Arrows
+      parentName: Hero
+      position: {x: -0.000000059604645, y: 4.3e-14, z: 0}
+      rotation: {x: -7.648866e-15, y: 0.00000004032899, z: 0.9226197, w: -0.3857109}
+      scale: {x: 1, y: 1, z: 1}
+    armTwist: 0.5
     foreArmTwist: 0.5
     upperLegTwist: 0.5
     legTwist: 0.5
