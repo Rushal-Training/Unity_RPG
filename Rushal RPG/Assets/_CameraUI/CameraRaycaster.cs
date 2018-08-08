@@ -10,6 +10,7 @@ namespace RPG.CameraUI
 	{
 		[SerializeField] Texture2D walkCursor = null;
 		[SerializeField] Texture2D targetCursor = null;
+		[SerializeField] Texture2D unknownCursor = null;
 		[SerializeField] Vector2 cursorHotspot = new Vector2 ( 0, 0 );
 
 		const int POTENTIALLY_WALKABLE_LAYER = 9;
@@ -37,9 +38,23 @@ namespace RPG.CameraUI
 		void PerformRaycasts ()
 		{
 			Ray ray = Camera.main.ScreenPointToRay ( Input.mousePosition );
+			if ( RaycastForUnknown ( ray ) ) { return; }
 			if ( RaycastForEnemy ( ray ) ) { return; }
 			if ( RaycastForPotentiallyWalkable ( ray ) ) { return; }
 
+		}
+
+		private bool RaycastForUnknown ( Ray ray )
+		{
+			RaycastHit hitInfo;
+			bool unreachableRaycast = Physics.Raycast ( ray, out hitInfo, maxRaycastDepth );
+
+			if ( !unreachableRaycast )
+			{
+				Cursor.SetCursor ( unknownCursor, cursorHotspot, CursorMode.Auto );
+				return true;
+			}
+			return false;
 		}
 
 		private bool RaycastForEnemy ( Ray ray )

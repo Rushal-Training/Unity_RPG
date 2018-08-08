@@ -22,7 +22,6 @@ GameObject:
   - component: {fileID: 20080839062147772}
   - component: {fileID: 81359397357921072}
   - component: {fileID: 114492720596235848}
-  - component: {fileID: 114058701268999218}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -66,13 +65,13 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1346599613785360}
-  m_LocalRotation: {x: 0.27134278, y: -0.5720486, z: 0.20820862, w: 0.7455084}
-  m_LocalPosition: {x: 6, y: 6, z: -2}
+  m_LocalRotation: {x: 0.38019952, y: 0.3113135, z: -0.13763025, w: 0.85999435}
+  m_LocalPosition: {x: -3.62, y: 7.31, z: -3.76}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4173238261457686}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 40, y: -75, z: 0}
+  m_LocalEulerAnglesHint: {x: 47.7, y: 39.8, z: 0}
 --- !u!20 &20080839062147772
 Camera:
   m_ObjectHideFlags: 1
@@ -120,23 +119,6 @@ AudioListener:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1346599613785360}
   m_Enabled: 1
---- !u!114 &114058701268999218
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1346599613785360}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec1185da5ad8489459c615469ddee0fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  walkable: 9
-  enemy: 10
-  walkCursor: {fileID: 2800000, guid: 7f181e2a47ddce0418f0cb01d21885c1, type: 3}
-  targetCursor: {fileID: 2800000, guid: 856428c7597c8454499fed842de8dd3a, type: 3}
-  unknownCursor: {fileID: 2800000, guid: c84928267b81eef48bb136c9a643b048, type: 3}
-  cursorHotspot: {x: 0, y: 0}
 --- !u!114 &114207905987673390
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -159,4 +141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d02853f5d34bd8f429969ac34c466d07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  layerPriorities: 0a00000009000000
+  walkCursor: {fileID: 2800000, guid: 7f181e2a47ddce0418f0cb01d21885c1, type: 3}
+  targetCursor: {fileID: 2800000, guid: 856428c7597c8454499fed842de8dd3a, type: 3}
+  unknownCursor: {fileID: 2800000, guid: c84928267b81eef48bb136c9a643b048, type: 3}
+  cursorHotspot: {x: 0, y: 0}
