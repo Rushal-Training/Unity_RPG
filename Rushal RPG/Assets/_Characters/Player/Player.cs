@@ -19,6 +19,8 @@ namespace RPG.Characters
 		[SerializeField] Weapon weaponInUse = null;
 		[SerializeField] AnimatorOverrideController animatorOverrideController = null;
 
+		[SerializeField] SpecialAbilityConfig ability1;
+
 		Animator animator;
 		CameraRaycaster cameraRaycaster;
 		float currentHealthPoints;
@@ -41,6 +43,8 @@ namespace RPG.Characters
 			SetCurrentMaxHealth ();
 			PutWeaponInHand ();
 			SetupRuntimeAnimator ();
+
+			ability1.AddComponent ( gameObject );
 		}
 
 		private void SetCurrentMaxHealth ()
@@ -66,6 +70,21 @@ namespace RPG.Characters
 			if (Input.GetMouseButton( 0 ) && IsTargetInRange ( enemy.gameObject ) )
 			{
 				AttackTarget ( enemy );
+			}
+			else if ( Input.GetMouseButtonDown ( 1 ) ) //TODO check for ability range
+			{
+				AttemptSpecialAbility1 ( enemy );
+			}
+		}
+
+		private void AttemptSpecialAbility1 ( Enemy enemy )
+		{
+			var energyComponent = GetComponent<Energy> ();
+
+			if (energyComponent.IsEnergyAvailable(10f)) //TODO read from ability config file
+			{
+				energyComponent.ConsumeEnergy ( 10f );
+				//use ability
 			}
 		}
 
