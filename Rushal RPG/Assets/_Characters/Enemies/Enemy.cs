@@ -12,9 +12,11 @@ namespace RPG.Characters
 	{
 		[SerializeField] float maxHealthPoints = 100f;
 		[SerializeField] float attackRadius = 5f;
-		[SerializeField] float damagePerShot = 9f;
-		[SerializeField] float secondsBetweenShots = 0.5f;
 		[SerializeField] float chaseRadius = 5f;
+
+		[SerializeField] float damagePerShot = 9f;
+		[SerializeField] float firingPeriodInSeconds = 0.5f;
+		[SerializeField] float firingPeriodVariation = 0.1f;
 		[SerializeField] GameObject projectileToUse;
 		[SerializeField] GameObject projectileSocket;
 		[SerializeField] Vector3 aimOffset = new Vector3 ( 0f, 1f, 0f );
@@ -48,30 +50,36 @@ namespace RPG.Characters
 
 		void Update ()
 		{
-
-			float distanceToPlayer = Vector3.Distance ( player.transform.position, aiCharacterControl.transform.position );
-
-			if ( distanceToPlayer > attackRadius )
+			if ( player.healthAsPercentage <= Mathf.Epsilon )
 			{
-				isAttacking = false;
-				CancelInvoke ();
-			}
-
-			if ( distanceToPlayer <= attackRadius && !isAttacking )
-			{
-				isAttacking = true;
-				InvokeRepeating ( "SpawnProjectile", 0, secondsBetweenShots ); //TODO switch to coroutine
-			}
-
-			if ( distanceToPlayer <= chaseRadius )
-			{
-				aiCharacterControl.SetTarget ( player.transform );
+				Destroy ( this );
+				StopAllCoroutines ();
 			}
 			else
 			{
-				aiCharacterControl.SetTarget ( transform );
-			}
+				float distanceToPlayer = Vector3.Distance ( player.transform.position, aiCharacterControl.transform.position );
+				if ( distanceToPlayer > attackRadius )
+				{
+					isAttacking = false;
+					CancelInvoke ();
+				}
 
+				if ( distanceToPlayer <= attackRadius && !isAttacking )
+				{
+					isAttacking = true;
+					float randomizedDelay = Random.Range ( firingPeriodInSeconds - firingPeriodVariation, firingPeriodInSeconds + firingPeriodVariation );
+					InvokeRepeating ( "SpawnProjectile", 0, randomizedDelay ); //TODO switch to coroutine
+				}
+
+				if ( distanceToPlayer <= chaseRadius )
+				{
+					aiCharacterControl.SetTarget ( player.transform );
+				}
+				else
+				{
+					aiCharacterControl.SetTarget ( transform );
+				}
+			}			
 		}
 
 		// TODO separate character firing logic

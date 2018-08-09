@@ -15,7 +15,6 @@ namespace RPG.Characters
 		CameraRaycaster cameraRaycaster;
 		Vector3 clickPoint;
 		GameObject walkTarget;
-		Player player;
 
 		bool isInDirectMode = false; // TODO consider making static
 
@@ -28,12 +27,11 @@ namespace RPG.Characters
 			aiCharacterControl = GetComponent<AICharacterControl> ();
 			thirdPersonCharacter = GetComponent<ThirdPersonCharacter> ();
 			walkTarget = new GameObject ( "WalkTarget" );
-			player = GetComponent<Player>();
 		}
 
 		void OnMouseOverPotentiallyWalkable ( Vector3 destination )
 		{
-			if ( Input.GetMouseButton ( 0 ) && !player.GetIsDead())
+			if ( Input.GetMouseButton ( 0 ) )
 			{
 				walkTarget.transform.position = destination;
 				aiCharacterControl.SetTarget ( walkTarget.transform );
@@ -42,12 +40,9 @@ namespace RPG.Characters
 
 		void OnMouseOverEnemy ( Enemy enemy )
 		{
-			if ( !player.GetIsDead() )
+			if ( Input.GetMouseButton( 0 ) || Input.GetMouseButtonDown( 1 ) )
 			{
-				if ( Input.GetMouseButton( 0 ) || Input.GetMouseButtonDown( 1 ) )
-				{
-					aiCharacterControl.SetTarget( enemy.transform );
-				}
+				aiCharacterControl.SetTarget( enemy.transform );
 			}
 		}
 

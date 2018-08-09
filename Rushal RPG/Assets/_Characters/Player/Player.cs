@@ -19,46 +19,45 @@ namespace RPG.Characters
 
 		[SerializeField] Weapon weaponInUse = null;
 		[SerializeField] AnimatorOverrideController animatorOverrideController = null;
-		[SerializeField] AudioClip deathSound = null;
+		[SerializeField] AudioClip[] damageSounds = null;
+		[SerializeField] AudioClip[] deathSounds = null;
 
 		[SerializeField] SpecialAbility[] abilities;
 
+		const string ATTACK_TRIGGER = "Attack";
+		const string DEATH_TRIGGER = "Death";
+
 		Animator animator;
+		AudioSource audioSource;
 		CameraRaycaster cameraRaycaster;
 		float currentHealthPoints;
 		float lastHitTime = 0f;
-		bool isDead = false;
-
-		public bool GetIsDead()
-		{
-			return isDead;
-		}
 
 		public void TakeDamage ( float damage )
 		{
-			ReduceHeath( damage );
-			isDead = ( currentHealthPoints - damage <= 0 );
-			if ( isDead )
+			if ( currentHealthPoints - damage <= 0 )
 			{
 				StartCoroutine( KillPlayer() );
 			}
+			ReduceHeath ( damage );
 		}
 
 		IEnumerator KillPlayer ()
 		{
-			isDead = true;
-			if ( deathSound )
-			{
-				AudioSource.PlayClipAtPoint( deathSound, transform.position );
-			}
-			animator.SetBool( "Death", true );
-			yield return new WaitForSecondsRealtime (3f);
+			animator.SetTrigger ( DEATH_TRIGGER );
+
+			audioSource.clip = deathSounds [UnityEngine.Random.Range ( 0, deathSounds.Length )];
+			audioSource.Play ();
+			yield return new WaitForSecondsRealtime ( audioSource.clip.length );
+
 			SceneManager.LoadScene( 0 );
 		}
 
 		private void ReduceHeath( float damage )
 		{
 			currentHealthPoints = Mathf.Clamp( currentHealthPoints - damage, 0f, maxHealthPoints );
+			audioSource.clip = damageSounds [UnityEngine.Random.Range ( 0, damageSounds.Length )];
+			audioSource.Play ();
 		}
 
 		public float healthAsPercentage
@@ -68,6 +67,7 @@ namespace RPG.Characters
 
 		void Start ()
 		{
+			audioSource = GetComponent<AudioSource> ();
 			RegisterForMouseClick();
 			SetCurrentMaxHealth();
 			PutWeaponInHand();
@@ -96,16 +96,13 @@ namespace RPG.Characters
 
 		void OnMouseOverEnemy ( Enemy enemy )
 		{
-			if ( !isDead )
+			if ( Input.GetMouseButton( 0 ) && IsTargetInRange( enemy.gameObject ) )
 			{
-				if ( Input.GetMouseButton( 0 ) && IsTargetInRange( enemy.gameObject ) )
-				{
-					AttackTarget( enemy );
-				}
-				else if ( Input.GetMouseButtonDown( 1 ) ) //TODO check for ability range
-				{
-					AttemptSpecialAbility( 0, enemy );
-				}
+				AttackTarget( enemy );
+			}
+			else if ( Input.GetMouseButtonDown( 1 ) ) //TODO check for ability range
+			{
+				AttemptSpecialAbility( 0, enemy );
 			}
 		}
 
@@ -155,7 +152,7 @@ namespace RPG.Characters
 			IDamagable damagableComponent = enemy.GetComponent<IDamagable> ();
 			if ( damagableComponent != null && Time.time - lastHitTime > weaponInUse.GetMinTimeBetweenHits() )
 			{
-				animator.SetTrigger ( "Attack" ); // TODO make const
+				animator.SetTrigger ( ATTACK_TRIGGER );
 				damagableComponent.TakeDamage ( baseDamage );
 				lastHitTime = Time.time;
 			}
