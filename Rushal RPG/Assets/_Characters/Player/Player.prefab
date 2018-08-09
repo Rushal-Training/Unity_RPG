@@ -189,12 +189,12 @@ GameObject:
   - component: {fileID: 54867559281616712}
   - component: {fileID: 136901755028746204}
   - component: {fileID: 195822474674246664}
+  - component: {fileID: 82488830302709128}
   - component: {fileID: 114835391153603578}
   - component: {fileID: 114943157591017064}
   - component: {fileID: 114136499493190846}
   - component: {fileID: 114971019616710268}
   - component: {fileID: 114888799107262436}
-  - component: {fileID: 82488830302709128}
   m_Layer: 11
   m_Name: Player
   m_TagString: Player
@@ -228,21 +228,6 @@ GameObject:
   - component: {fileID: 137765154713306726}
   m_Layer: 12
   m_Name: Hero
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &1699013379493620
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4879372367485112}
-  m_Layer: 12
-  m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -618,19 +603,6 @@ Transform:
   m_Father: {fileID: 4070319021328886}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &4879372367485112
-Transform:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1699013379493620}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4985233958605320}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4929066288562534
 Transform:
   m_ObjectHideFlags: 1
@@ -650,13 +622,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1601004360757376}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -233.15242, y: 4.9990845, z: -231.22118}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 4.15, y: -1, z: 8.59}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4070319021328886}
   - {fileID: 4297837741453448}
-  - {fileID: 4879372367485112}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -840,7 +811,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ac96a330e5df0245950ceea338122b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  energyBar: {fileID: 0}
+  energyOrb: {fileID: 0}
   maxEnergyPoints: 100
   regenPointsPerSecond: 10
 --- !u!114 &114943157591017064

@@ -33,13 +33,19 @@ namespace RPG.Characters
 		float currentHealthPoints;
 		float lastHitTime = 0f;
 
+		public float healthAsPercentage
+		{
+			get { return currentHealthPoints / maxHealthPoints; }
+		}
+
 		public void TakeDamage ( float damage )
 		{
-			if ( currentHealthPoints - damage <= 0 )
+			bool playerIsDead = currentHealthPoints - damage <= 0;
+			ReduceHeath ( damage );
+			if ( playerIsDead )
 			{
 				StartCoroutine( KillPlayer() );
 			}
-			ReduceHeath ( damage );
 		}
 
 		IEnumerator KillPlayer ()
@@ -58,11 +64,6 @@ namespace RPG.Characters
 			currentHealthPoints = Mathf.Clamp( currentHealthPoints - damage, 0f, maxHealthPoints );
 			audioSource.clip = damageSounds [UnityEngine.Random.Range ( 0, damageSounds.Length )];
 			audioSource.Play ();
-		}
-
-		public float healthAsPercentage
-		{
-			get { return currentHealthPoints / maxHealthPoints;	}
 		}
 
 		void Start ()
