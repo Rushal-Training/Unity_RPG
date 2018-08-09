@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.SceneManagement;
 
 // TODO consider rewiring
 using RPG.CameraUI;
@@ -18,6 +19,7 @@ namespace RPG.Characters
 
 		[SerializeField] Weapon weaponInUse = null;
 		[SerializeField] AnimatorOverrideController animatorOverrideController = null;
+		[SerializeField] AudioClip deathSound = null;
 
 		[SerializeField] SpecialAbility[] abilities;
 
@@ -25,11 +27,38 @@ namespace RPG.Characters
 		CameraRaycaster cameraRaycaster;
 		float currentHealthPoints;
 		float lastHitTime = 0f;
+		bool isDead = false;
+
+		public bool GetIsDead()
+		{
+			return isDead;
+		}
 
 		public void TakeDamage ( float damage )
 		{
-			currentHealthPoints = Mathf.Clamp ( currentHealthPoints - damage, 0f, maxHealthPoints );
-			//if ( currentHealthPoints <= 0 ) { Destroy( gameObject );  }
+			ReduceHeath( damage );
+			isDead = ( currentHealthPoints - damage <= 0 );
+			if ( isDead )
+			{
+				StartCoroutine( KillPlayer() );
+			}
+		}
+
+		IEnumerator KillPlayer ()
+		{
+			isDead = true;
+			if ( deathSound )
+			{
+				AudioSource.PlayClipAtPoint( deathSound, transform.position );
+			}
+			animator.SetBool( "Death", true );
+			yield return new WaitForSecondsRealtime (3f);
+			SceneManager.LoadScene( 0 );
+		}
+
+		private void ReduceHeath( float damage )
+		{
+			currentHealthPoints = Mathf.Clamp( currentHealthPoints - damage, 0f, maxHealthPoints );
 		}
 
 		public float healthAsPercentage
@@ -39,12 +68,12 @@ namespace RPG.Characters
 
 		void Start ()
 		{
-			RegisterForMouseClick ();
-			SetCurrentMaxHealth ();
-			PutWeaponInHand ();
-			SetupRuntimeAnimator ();
+			RegisterForMouseClick();
+			SetCurrentMaxHealth();
+			PutWeaponInHand();
+			SetupRuntimeAnimator();
 
-			abilities[0].AttachComponentTo ( gameObject );
+			abilities[0].AttachComponentTo( gameObject );
 		}
 
 		private void SetCurrentMaxHealth ()
@@ -67,13 +96,16 @@ namespace RPG.Characters
 
 		void OnMouseOverEnemy ( Enemy enemy )
 		{
-			if (Input.GetMouseButton( 0 ) && IsTargetInRange ( enemy.gameObject ) )
+			if ( !isDead )
 			{
-				AttackTarget ( enemy );
-			}
-			else if ( Input.GetMouseButtonDown ( 1 ) ) //TODO check for ability range
-			{
-				AttemptSpecialAbility (0, enemy );
+				if ( Input.GetMouseButton( 0 ) && IsTargetInRange( enemy.gameObject ) )
+				{
+					AttackTarget( enemy );
+				}
+				else if ( Input.GetMouseButtonDown( 1 ) ) //TODO check for ability range
+				{
+					AttemptSpecialAbility( 0, enemy );
+				}
 			}
 		}
 
