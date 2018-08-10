@@ -19,17 +19,18 @@ namespace RPG.Characters
 
 		[SerializeField] Weapon weaponInUse = null;
 		[SerializeField] AnimatorOverrideController animatorOverrideController = null;
-		[SerializeField] AudioClip[] damageSounds = null;
-		[SerializeField] AudioClip[] deathSounds = null;
+		[SerializeField] AudioClip [] damageSounds = null;
+		[SerializeField] AudioClip [] deathSounds = null;
 
-		[SerializeField] SpecialAbility[] abilities;
+		[SerializeField] AbilityConfig [] abilities;
 
 		const string ATTACK_TRIGGER = "Attack";
 		const string DEATH_TRIGGER = "Death";
 
-		Animator animator;
-		AudioSource audioSource;
-		CameraRaycaster cameraRaycaster;
+		Animator animator = null;
+		AudioSource audioSource = null;
+		CameraRaycaster cameraRaycaster = null;
+		Enemy currentEnemy = null;
 		float currentHealthPoints;
 		float lastHitTime = 0f;
 
@@ -40,12 +41,19 @@ namespace RPG.Characters
 
 		public void TakeDamage ( float damage )
 		{
-			bool playerIsDead = currentHealthPoints - damage <= 0;
-			ReduceHeath ( damage );
-			if ( playerIsDead )
+			currentHealthPoints = Mathf.Clamp ( currentHealthPoints - damage, 0f, maxHealthPoints );
+			audioSource.clip = damageSounds [UnityEngine.Random.Range ( 0, damageSounds.Length )];
+			audioSource.Play ();
+
+			if ( currentHealthPoints <= 0 )
 			{
-				StartCoroutine( KillPlayer() );
+				StartCoroutine ( KillPlayer () );
 			}
+		}
+
+		public void Heal ( float points )
+		{
+			currentHealthPoints = Mathf.Clamp ( currentHealthPoints + points, 0f, maxHealthPoints );
 		}
 
 		IEnumerator KillPlayer ()
@@ -59,13 +67,6 @@ namespace RPG.Characters
 			SceneManager.LoadScene( 0 );
 		}
 
-		private void ReduceHeath( float damage )
-		{
-			currentHealthPoints = Mathf.Clamp( currentHealthPoints - damage, 0f, maxHealthPoints );
-			audioSource.clip = damageSounds [UnityEngine.Random.Range ( 0, damageSounds.Length )];
-			audioSource.Play ();
-		}
-
 		void Start ()
 		{
 			audioSource = GetComponent<AudioSource> ();
@@ -73,8 +74,34 @@ namespace RPG.Characters
 			SetCurrentMaxHealth();
 			PutWeaponInHand();
 			SetupRuntimeAnimator();
+			AttachInitialAbilities ();
+		}
 
-			abilities[0].AttachComponentTo( gameObject );
+		void Update ()
+		{
+			if ( healthAsPercentage > Mathf.Epsilon )
+			{
+				ScanForAbilityKeyDown ();
+			}
+		}
+
+		private void AttachInitialAbilities ()
+		{
+			for ( int abilityIndex = 0; abilityIndex < abilities.Length; abilityIndex++ )
+			{
+				abilities [abilityIndex].AttachComponentTo ( gameObject );
+			}
+		}
+
+		private void ScanForAbilityKeyDown ()
+		{
+			for ( int keyIndex = 1; keyIndex < abilities.Length; keyIndex++ )
+			{
+				if ( Input.GetKeyDown( keyIndex.ToString() ) )
+				{
+					AttemptSpecialAbility ( keyIndex );
+				}
+			}
 		}
 
 		private void SetCurrentMaxHealth ()
@@ -97,17 +124,18 @@ namespace RPG.Characters
 
 		void OnMouseOverEnemy ( Enemy enemy )
 		{
+			currentEnemy = enemy;
 			if ( Input.GetMouseButton( 0 ) && IsTargetInRange( enemy.gameObject ) )
 			{
-				AttackTarget( enemy );
+				AttackTarget();
 			}
 			else if ( Input.GetMouseButtonDown( 1 ) ) //TODO check for ability range
 			{
-				AttemptSpecialAbility( 0, enemy );
+				AttemptSpecialAbility( 0 );
 			}
 		}
 
-		private void AttemptSpecialAbility (int abilityIndex, Enemy enemy )
+		private void AttemptSpecialAbility (int abilityIndex )
 		{
 			var energyComponent = GetComponent<Energy> ();
 			var energyCost = abilities [abilityIndex].GetEnergyCost ();
@@ -116,7 +144,7 @@ namespace RPG.Characters
 			{
 				energyComponent.ConsumeEnergy ( energyCost );
 
-				var abilityParams = new AbilityUseParams ( enemy, baseDamage );
+				var abilityParams = new AbilityUseParams ( currentEnemy, baseDamage );
 				abilities [abilityIndex].Use ( abilityParams );				
 			}
 		}
@@ -145,12 +173,12 @@ namespace RPG.Characters
 			return distanceToTarget <= weaponInUse.GetMaxAttackRange();
 		}
 
-		private void AttackTarget ( Enemy enemy  )
+		private void AttackTarget ()
 		{
-			Vector3 faceTheEnemy = (enemy.transform.position - transform.position);
+			Vector3 faceTheEnemy = (currentEnemy.transform.position - transform.position);
 			transform.rotation = Quaternion.Slerp ( transform.rotation, Quaternion.LookRotation ( faceTheEnemy ), 0.2f );
 
-			IDamagable damagableComponent = enemy.GetComponent<IDamagable> ();
+			IDamagable damagableComponent = currentEnemy.GetComponent<IDamagable> ();
 			if ( damagableComponent != null && Time.time - lastHitTime > weaponInUse.GetMinTimeBetweenHits() )
 			{
 				animator.SetTrigger ( ATTACK_TRIGGER );
