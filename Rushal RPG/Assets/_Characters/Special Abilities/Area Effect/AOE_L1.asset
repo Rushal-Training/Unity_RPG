@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Name: AOE_L1
   m_EditorClassIdentifier: 
   energyCost: 15
-  particlePrefab: {fileID: 1163350176791118, guid: 1e6dfcf3fd4f3cb479bdf26d649eadcc,
+  particlePrefab: {fileID: 1550264278831660, guid: 28b83ee89824ffc47a416b4e7812d177,
     type: 2}
+  audioClip: {fileID: 0}
   radius: 5
   damageToEachTarget: 15

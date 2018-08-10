@@ -40,7 +40,7 @@ namespace RPG.Characters
 			prefab.transform.parent = transform;
 			ParticleSystem myParticleSystem = prefab.GetComponent<ParticleSystem> ();
 			myParticleSystem.Play ();
-			Destroy ( prefab, myParticleSystem.main.duration );
+			Destroy ( prefab, myParticleSystem.main.duration + 4 );
 		}
 	}
 }
