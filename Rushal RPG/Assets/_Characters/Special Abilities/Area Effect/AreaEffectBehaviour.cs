@@ -2,47 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 using RPG.Core;
-using System;
 
 namespace RPG.Characters
 {
-	public class AreaEffectBehaviour : MonoBehaviour, ISpecialAbility
+	public class AreaEffectBehaviour : AbilityBehaviour
 	{
-		AreaEffectConfig config;
-
-		public void SetConfig ( AreaEffectConfig configToSet )
+		public override void Use ( AbilityUseParams useParams )
 		{
-			config = configToSet;
-		}
-
-		void Start ()
-		{
-
-		}
-
-		void Update ()
-		{
-
-		}
-
-		public void Use ( AbilityUseParams useParams )
-		{
+			PlayAbilitySound();
 			DealRadialDamage ( useParams );
 			PlayParticleEffect ();
 		}
 
-		private void PlayParticleEffect ()
-		{
-			var prefab = Instantiate ( config.GetParticlePrefab (), transform.position, config.GetParticlePrefab ().transform.rotation );
-			//prefab.transform.parent = transform;
-			ParticleSystem myParticleSystem = prefab.GetComponent<ParticleSystem> ();
-			myParticleSystem.Play ();
-			Destroy ( prefab, myParticleSystem.main.duration );
-		}
-
 		private void DealRadialDamage ( AbilityUseParams useParams )
 		{
-			var hits = Physics.SphereCastAll ( transform.position, config.GetRaduis (), Vector3.forward, config.GetRaduis () );
+			var hits = Physics.SphereCastAll ( transform.position, (config as AreaEffectConfig).GetRaduis (), Vector3.forward, ( config as AreaEffectConfig ).GetRaduis () );
 
 			foreach ( var hit in hits )
 			{
@@ -50,7 +24,7 @@ namespace RPG.Characters
 				bool hitPlayer = hit.collider.gameObject.GetComponent<Player> ();
 				if ( damagable != null && !hitPlayer )
 				{
-					float damageToDeal = useParams.baseDamage + config.GetDamageToEnemies ();
+					float damageToDeal = useParams.baseDamage + ( config as AreaEffectConfig ).GetDamageToEnemies ();
 					damagable.TakeDamage ( damageToDeal );
 				}
 			}
