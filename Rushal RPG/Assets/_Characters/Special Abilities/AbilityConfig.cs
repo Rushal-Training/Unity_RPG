@@ -5,18 +5,6 @@ using RPG.Core;
 
 namespace RPG.Characters
 {
-	public struct AbilityUseParams
-	{
-		public IDamagable target;
-		public float baseDamage;
-
-		public AbilityUseParams ( IDamagable target, float baseDamage )
-		{
-			this.target = target;
-			this.baseDamage = baseDamage;
-		}
-	}
-
 	public abstract class AbilityConfig : ScriptableObject
 	{
 		[Header ( "Special Ability General" )]
@@ -50,9 +38,9 @@ namespace RPG.Characters
 			return audioClips[Random.Range( 0, audioClips.Length )];
 		}
 
-		public void Use ( AbilityUseParams useParams )
+		public void Use ( GameObject target )
 		{
-			behaviour.Use ( useParams );
+			behaviour.Use ( target );
 		}
 	}
 }

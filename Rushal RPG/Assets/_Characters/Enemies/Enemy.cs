@@ -7,7 +7,7 @@ using RPG.Core;
 
 namespace RPG.Characters
 {
-	public class Enemy : MonoBehaviour, IDamagable //todo remove interface
+	public class Enemy : MonoBehaviour
 	{
 		[SerializeField] float attackRadius = 5f;
 		[SerializeField] float chaseRadius = 5f;
@@ -20,7 +20,7 @@ namespace RPG.Characters
 		[SerializeField] Vector3 aimOffset = new Vector3 ( 0f, 1f, 0f );
 
 		bool isAttacking = false;
-		Player player;
+		PlayerControl player;
 
 		public void TakeDamage (float amount)
 		{
@@ -29,7 +29,7 @@ namespace RPG.Characters
 
 		void Start ()
 		{
-			player = FindObjectOfType<Player> ();
+			player = FindObjectOfType<PlayerControl> ();
 		}
 
 		void Update ()

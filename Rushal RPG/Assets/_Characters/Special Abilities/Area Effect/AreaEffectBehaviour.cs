@@ -7,25 +7,24 @@ namespace RPG.Characters
 {
 	public class AreaEffectBehaviour : AbilityBehaviour
 	{
-		public override void Use ( AbilityUseParams useParams )
+		public override void Use ( GameObject target = null )
 		{
 			PlayAbilitySound();
-			DealRadialDamage ( useParams );
+			DealRadialDamage ( target );
 			PlayParticleEffect ();
 		}
 
-		private void DealRadialDamage ( AbilityUseParams useParams )
+		private void DealRadialDamage ( GameObject target )
 		{
 			var hits = Physics.SphereCastAll ( transform.position, (config as AreaEffectConfig).GetRaduis (), Vector3.forward, ( config as AreaEffectConfig ).GetRaduis () );
 
 			foreach ( var hit in hits )
 			{
-				var damagable = hit.collider.gameObject.GetComponent<IDamagable> ();
-				bool hitPlayer = hit.collider.gameObject.GetComponent<Player> ();
-				if ( damagable != null && !hitPlayer )
+				var enemy = hit.collider.gameObject.GetComponent<Enemy> ();
+				if ( enemy )
 				{
-					float damageToDeal = useParams.baseDamage + ( config as AreaEffectConfig ).GetDamageToEnemies ();
-					damagable.TakeDamage ( damageToDeal );
+					float damageToDeal = ( config as AreaEffectConfig ).GetDamageToEnemies ();
+					enemy.TakeDamage ( damageToDeal );
 				}
 			}
 		}

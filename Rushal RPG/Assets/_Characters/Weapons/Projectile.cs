@@ -30,14 +30,14 @@ namespace RPG.Characters
 
 		private void OnCollisionEnter ( Collision collision )
 		{
-			IDamagable damagableComponent = collision.gameObject.GetComponent<IDamagable> ();
+			/*IDamagable damagableComponent = collision.gameObject.GetComponent<IDamagable> ();
 			var collisionLayer = collision.gameObject.layer;
 			if ( damagableComponent != null && parentLayer != collisionLayer )
 			{
 				damagableComponent.TakeDamage ( damageCaused );
 			}
 
-			Destroy ( gameObject );
+			Destroy ( gameObject );*/
 		}
 	}
 }

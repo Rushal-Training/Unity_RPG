@@ -18,7 +18,7 @@ namespace RPG.Characters
 
 		Animator animator;
 		AudioSource audioSource;
-		CharacterMovement characterMovement;
+		Character characterMovement;
 
 		float currentHealthPoints;
 
@@ -46,7 +46,7 @@ namespace RPG.Characters
 			characterMovement.Kill ();
 			animator.SetTrigger ( DEATH_TRIGGER );
 
-			var playerComponent = GetComponent<Player> ();
+			var playerComponent = GetComponent<PlayerControl> ();
 			if ( playerComponent && playerComponent.isActiveAndEnabled )
 			{
 				audioSource.clip = deathSounds [UnityEngine.Random.Range ( 0, deathSounds.Length )];
@@ -69,7 +69,7 @@ namespace RPG.Characters
 		{
 			animator = GetComponent<Animator> ();
 			audioSource = GetComponent<AudioSource> ();
-			characterMovement = GetComponent<CharacterMovement> ();
+			characterMovement = GetComponent<Character> ();
 
 			currentHealthPoints = maxHealthPoints;
 		}
