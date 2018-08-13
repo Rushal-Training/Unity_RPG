@@ -8,7 +8,6 @@ using UnityEngine.SceneManagement;
 // TODO consider rewiring
 using RPG.CameraUI;
 using RPG.Core;
-using RPG.Weapons;
 
 namespace RPG.Characters
 {
@@ -19,7 +18,7 @@ namespace RPG.Characters
 		[Range (.1f, 1.0f)] [SerializeField] float criticalHitChance = .1f;
 		[SerializeField] float criticalHitMultiplier = 1.25f;
 
-		[SerializeField] Weapon weaponInUse = null;
+		[SerializeField] Weapon currentWeaponConfig = null;
 		[SerializeField] AnimatorOverrideController animatorOverrideController = null;
 		[SerializeField] AudioClip [] damageSounds = null;
 		[SerializeField] AudioClip [] deathSounds = null;
@@ -30,11 +29,13 @@ namespace RPG.Characters
 
 		const string ATTACK_TRIGGER = "Attack";
 		const string DEATH_TRIGGER = "Death";
+		const string DEFAULT_ATTACK = "DEFAULT ATTACK";
 
 		Animator animator = null;
 		AudioSource audioSource = null;
 		CameraRaycaster cameraRaycaster = null;
 		Enemy currentEnemy = null;
+		GameObject weaponObject = null;
 		float currentHealthPoints;
 		float lastHitTime = 0f;
 
@@ -71,13 +72,24 @@ namespace RPG.Characters
 			SceneManager.LoadScene( 0 );
 		}
 
+		public void PutWeaponInHand (Weapon weaponToUse )
+		{
+			currentWeaponConfig = weaponToUse;
+			var weaponPrefab = weaponToUse.GetWeaponPrefab ();
+			GameObject dominantHand = RequestDominantHand ();
+			Destroy ( weaponObject );
+			weaponObject = Instantiate ( weaponPrefab, dominantHand.transform );
+			weaponObject.transform.localPosition = weaponToUse.gripTransform.localPosition;
+			weaponObject.transform.localRotation = weaponToUse.gripTransform.localRotation;
+		}
+
 		void Start ()
 		{
 			audioSource = GetComponent<AudioSource> ();
 			RegisterForMouseClick();
 			SetCurrentMaxHealth();
-			PutWeaponInHand();
-			SetupRuntimeAnimator();
+			PutWeaponInHand(currentWeaponConfig);
+			SetAttackAnimation();
 			AttachInitialAbilities ();
 		}
 
@@ -113,11 +125,11 @@ namespace RPG.Characters
 			currentHealthPoints = maxHealthPoints;
 		}
 
-		private void SetupRuntimeAnimator ()
+		private void SetAttackAnimation ()
 		{
 			animator = GetComponent<Animator> ();
 			animator.runtimeAnimatorController = animatorOverrideController;
-			animatorOverrideController ["DEFAULT ATTACK"] = weaponInUse.GetAttackAnimClip (); // TODO remove paramater
+			animatorOverrideController [DEFAULT_ATTACK] = currentWeaponConfig.GetAttackAnimClip (); // TODO remove paramater
 		}
 
 		private void RegisterForMouseClick ()
@@ -153,15 +165,6 @@ namespace RPG.Characters
 			}
 		}
 
-		private void PutWeaponInHand ()
-		{
-			var weaponPrefab = weaponInUse.GetWeaponPrefab ();
-			GameObject dominantHand = RequestDominantHand ();
-			var weapon = Instantiate ( weaponPrefab, dominantHand.transform );
-			weapon.transform.localPosition = weaponInUse.gripTransform.localPosition;
-			weapon.transform.localRotation = weaponInUse.gripTransform.localRotation;
-		}
-
 		private GameObject RequestDominantHand ()
 		{
 			var dominantHands = GetComponentsInChildren<DominantHand> ();
@@ -174,7 +177,7 @@ namespace RPG.Characters
 		private bool IsTargetInRange ( GameObject target )
 		{
 			float distanceToTarget = (target.transform.position - transform.position).magnitude;
-			return distanceToTarget <= weaponInUse.GetMaxAttackRange();
+			return distanceToTarget <= currentWeaponConfig.GetMaxAttackRange();
 		}
 
 		private void AttackTarget ()
@@ -183,8 +186,9 @@ namespace RPG.Characters
 			transform.rotation = Quaternion.Slerp ( transform.rotation, Quaternion.LookRotation ( faceTheEnemy ), 0.2f );
 
 			IDamagable damagableComponent = currentEnemy.GetComponent<IDamagable> ();
-			if ( damagableComponent != null && Time.time - lastHitTime > weaponInUse.GetMinTimeBetweenHits() )
+			if ( damagableComponent != null && Time.time - lastHitTime > currentWeaponConfig.GetMinTimeBetweenHits() )
 			{
+				SetAttackAnimation ();
 				animator.SetTrigger ( ATTACK_TRIGGER );
 				damagableComponent.TakeDamage ( CalculateDamage () );
 				lastHitTime = Time.time;
@@ -193,7 +197,7 @@ namespace RPG.Characters
 
 		private float CalculateDamage ()
 		{
-			float totalDamage = baseDamage + weaponInUse.GetAdditionalDamage ();
+			float totalDamage = baseDamage + currentWeaponConfig.GetAdditionalDamage ();
 			if ( UnityEngine.Random.Range(0f, 1.0f) <= criticalHitChance )
 			{
 				criticalHitParticle.Play ();
