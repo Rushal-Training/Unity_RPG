@@ -7,9 +7,8 @@ using RPG.Core;
 
 namespace RPG.Characters
 {
-	public class Enemy : MonoBehaviour, IDamagable
+	public class Enemy : MonoBehaviour, IDamagable //todo remove interface
 	{
-		[SerializeField] float maxHealthPoints = 100f;
 		[SerializeField] float attackRadius = 5f;
 		[SerializeField] float chaseRadius = 5f;
 
@@ -21,64 +20,43 @@ namespace RPG.Characters
 		[SerializeField] Vector3 aimOffset = new Vector3 ( 0f, 1f, 0f );
 
 		bool isAttacking = false;
-		float currentHealthPoints;
-		AICharacterControl aiCharacterControl = null;
 		Player player;
 
-		public float healthAsPercentage
+		public void TakeDamage (float amount)
 		{
-			get
-			{
-				return currentHealthPoints / maxHealthPoints;
-			}
-		}
-
-		public void TakeDamage ( float damage )
-		{
-			currentHealthPoints = Mathf.Clamp ( currentHealthPoints - damage, 0f, maxHealthPoints );
-			if ( currentHealthPoints <= 0 ) { Destroy ( gameObject ); }
+			//todo remove
 		}
 
 		void Start ()
 		{
-			aiCharacterControl = GetComponent<AICharacterControl> ();
 			player = FindObjectOfType<Player> ();
-
-			currentHealthPoints = maxHealthPoints;
 		}
 
 		void Update ()
-		{
-			if ( player.healthAsPercentage <= Mathf.Epsilon )
+		{			
+			float distanceToPlayer = Vector3.Distance ( player.transform.position, transform.position );
+			if ( distanceToPlayer > attackRadius )
 			{
-				Destroy ( this );
-				StopAllCoroutines ();
+				isAttacking = false;
+				CancelInvoke ();
+			}
+
+			if ( distanceToPlayer <= attackRadius && !isAttacking )
+			{
+				isAttacking = true;
+				float randomizedDelay = Random.Range ( firingPeriodInSeconds - firingPeriodVariation, firingPeriodInSeconds + firingPeriodVariation );
+				InvokeRepeating ( "SpawnProjectile", 0, randomizedDelay ); //TODO switch to coroutine
+			}
+
+			if ( distanceToPlayer <= chaseRadius )
+			{
+				//aiCharacterControl.SetTarget ( player.transform );
 			}
 			else
 			{
-				float distanceToPlayer = Vector3.Distance ( player.transform.position, aiCharacterControl.transform.position );
-				if ( distanceToPlayer > attackRadius )
-				{
-					isAttacking = false;
-					CancelInvoke ();
-				}
-
-				if ( distanceToPlayer <= attackRadius && !isAttacking )
-				{
-					isAttacking = true;
-					float randomizedDelay = Random.Range ( firingPeriodInSeconds - firingPeriodVariation, firingPeriodInSeconds + firingPeriodVariation );
-					InvokeRepeating ( "SpawnProjectile", 0, randomizedDelay ); //TODO switch to coroutine
-				}
-
-				if ( distanceToPlayer <= chaseRadius )
-				{
-					aiCharacterControl.SetTarget ( player.transform );
-				}
-				else
-				{
-					aiCharacterControl.SetTarget ( transform );
-				}
-			}			
+				//aiCharacterControl.SetTarget ( transform );
+			}
+			
 		}
 
 		// TODO separate character firing logic

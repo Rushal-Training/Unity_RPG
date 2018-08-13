@@ -11,66 +11,27 @@ using RPG.Core;
 
 namespace RPG.Characters
 {
-	public class Player : MonoBehaviour, IDamagable
+	public class Player : MonoBehaviour
 	{
-		[SerializeField] float maxHealthPoints = 100f;
+		
 		[SerializeField] float baseDamage = 10f;
 		[Range (.1f, 1.0f)] [SerializeField] float criticalHitChance = .1f;
 		[SerializeField] float criticalHitMultiplier = 1.25f;
 
 		[SerializeField] Weapon currentWeaponConfig = null;
 		[SerializeField] AnimatorOverrideController animatorOverrideController = null;
-		[SerializeField] AudioClip [] damageSounds = null;
-		[SerializeField] AudioClip [] deathSounds = null;
+		
 		[SerializeField] ParticleSystem criticalHitParticle;
 
-
-		[SerializeField] AbilityConfig [] abilities;
-
 		const string ATTACK_TRIGGER = "Attack";
-		const string DEATH_TRIGGER = "Death";
 		const string DEFAULT_ATTACK = "DEFAULT ATTACK";
 
-		Animator animator = null;
-		AudioSource audioSource = null;
 		CameraRaycaster cameraRaycaster = null;
 		Enemy currentEnemy = null;
 		GameObject weaponObject = null;
-		float currentHealthPoints;
+		SpecialAbilities abilities;
 		float lastHitTime = 0f;
 
-		public float healthAsPercentage
-		{
-			get { return currentHealthPoints / maxHealthPoints; }
-		}
-
-		public void TakeDamage ( float damage )
-		{
-			currentHealthPoints = Mathf.Clamp ( currentHealthPoints - damage, 0f, maxHealthPoints );
-			audioSource.clip = damageSounds [UnityEngine.Random.Range ( 0, damageSounds.Length )];
-			audioSource.Play ();
-
-			if ( currentHealthPoints <= 0 )
-			{
-				StartCoroutine ( KillPlayer () );
-			}
-		}
-
-		public void Heal ( float points )
-		{
-			currentHealthPoints = Mathf.Clamp ( currentHealthPoints + points, 0f, maxHealthPoints );
-		}
-
-		IEnumerator KillPlayer ()
-		{
-			animator.SetTrigger ( DEATH_TRIGGER );
-
-			audioSource.clip = deathSounds [UnityEngine.Random.Range ( 0, deathSounds.Length )];
-			audioSource.Play ();
-			yield return new WaitForSecondsRealtime ( audioSource.clip.length );
-
-			SceneManager.LoadScene( 0 );
-		}
 
 		public void PutWeaponInHand (Weapon weaponToUse )
 		{
@@ -85,49 +46,36 @@ namespace RPG.Characters
 
 		void Start ()
 		{
-			audioSource = GetComponent<AudioSource> ();
+			abilities = GetComponent<SpecialAbilities> ();
+
 			RegisterForMouseClick();
-			SetCurrentMaxHealth();
 			PutWeaponInHand(currentWeaponConfig);
 			SetAttackAnimation();
-			AttachInitialAbilities ();
 		}
 
 		void Update ()
 		{
+			var healthAsPercentage = GetComponent<HealthSystem> ().healthAsPercentage;
 			if ( healthAsPercentage > Mathf.Epsilon )
 			{
 				ScanForAbilityKeyDown ();
 			}
 		}
 
-		private void AttachInitialAbilities ()
-		{
-			for ( int abilityIndex = 0; abilityIndex < abilities.Length; abilityIndex++ )
-			{
-				abilities [abilityIndex].AttachAbilityTo ( gameObject );
-			}
-		}
-
 		private void ScanForAbilityKeyDown ()
 		{
-			for ( int keyIndex = 1; keyIndex < abilities.Length; keyIndex++ )
+			for ( int keyIndex = 1; keyIndex < abilities.GetNumberOfAbilities(); keyIndex++ )
 			{
 				if ( Input.GetKeyDown( keyIndex.ToString() ) )
 				{
-					AttemptSpecialAbility ( keyIndex );
+					abilities.AttemptSpecialAbility ( keyIndex );
 				}
 			}
 		}
 
-		private void SetCurrentMaxHealth ()
-		{
-			currentHealthPoints = maxHealthPoints;
-		}
-
 		private void SetAttackAnimation ()
 		{
-			animator = GetComponent<Animator> ();
+			Animator animator = GetComponent<Animator> ();
 			animator.runtimeAnimatorController = animatorOverrideController;
 			animatorOverrideController [DEFAULT_ATTACK] = currentWeaponConfig.GetAttackAnimClip (); // TODO remove paramater
 		}
@@ -147,24 +95,10 @@ namespace RPG.Characters
 			}
 			else if ( Input.GetMouseButtonDown( 1 ) ) //TODO check for ability range
 			{
-				AttemptSpecialAbility( 0 );
+				abilities.AttemptSpecialAbility( 0 );
 			}
 		}
-
-		private void AttemptSpecialAbility (int abilityIndex )
-		{
-			var energyComponent = GetComponent<Energy> ();
-			var energyCost = abilities [abilityIndex].GetEnergyCost ();
-
-			if (energyComponent.IsEnergyAvailable( energyCost ) )
-			{
-				energyComponent.ConsumeEnergy ( energyCost );
-
-				var abilityParams = new AbilityUseParams ( currentEnemy, baseDamage );
-				abilities [abilityIndex].Use ( abilityParams );				
-			}
-		}
-
+		
 		private GameObject RequestDominantHand ()
 		{
 			var dominantHands = GetComponentsInChildren<DominantHand> ();
@@ -189,7 +123,7 @@ namespace RPG.Characters
 			if ( damagableComponent != null && Time.time - lastHitTime > currentWeaponConfig.GetMinTimeBetweenHits() )
 			{
 				SetAttackAnimation ();
-				animator.SetTrigger ( ATTACK_TRIGGER );
+				//animator.SetTrigger ( ATTACK_TRIGGER );
 				damagableComponent.TakeDamage ( CalculateDamage () );
 				lastHitTime = Time.time;
 			}
