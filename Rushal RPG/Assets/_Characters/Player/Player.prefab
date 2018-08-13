@@ -698,8 +698,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33e702bf8d8cafa4e8f4eb9cde89668b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  runtimeAnimatorController: {fileID: 9100000, guid: e2cf68ff4b1ffda45a77f7307dd789b9,
-    type: 2}
+  animatorController: {fileID: 0}
   animatorOverrideController: {fileID: 22100000, guid: d450c62c066ca014b8f88f235872e7e1,
     type: 2}
   avatar: {fileID: 9000000, guid: 8d0a57b326030fc44ad6eeab6f398c6a, type: 3}

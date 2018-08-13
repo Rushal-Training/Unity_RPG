@@ -9,7 +9,7 @@ namespace RPG.Characters
 	public class Character : MonoBehaviour
 	{
 		[Header("Animator")]
-		[SerializeField] RuntimeAnimatorController runtimeAnimatorController;
+		[SerializeField] RuntimeAnimatorController animatorController;
 		[SerializeField] AnimatorOverrideController animatorOverrideController;
 		[SerializeField] Avatar avatar;
 
@@ -71,7 +71,7 @@ namespace RPG.Characters
 			audioSource.spatialBlend = audioSourceSpatialBlend;
 
 			animator = gameObject.AddComponent<Animator> ();
-			animator.runtimeAnimatorController = runtimeAnimatorController;
+			animator.runtimeAnimatorController = animatorController;
 			animator.avatar = avatar;
 
 			navMeshAgent = gameObject.AddComponent<NavMeshAgent> ();
