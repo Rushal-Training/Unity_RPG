@@ -42,6 +42,8 @@ namespace RPG.Characters
 		bool isAlive = true;
 		bool isInDirectMode = false; // TODO consider making static
 
+		public AnimatorOverrideController getOverrideController { get { return animatorOverrideController; } }
+
 		public void SetDestination ( Vector3 worldPos )
 		{
 			navMeshAgent.destination = worldPos;
@@ -124,22 +126,6 @@ namespace RPG.Characters
 			float turnSpeed = Mathf.Lerp ( stationaryTurnSpeed, movingTurnSpeed, forwardAmount );
 			transform.Rotate ( 0, turnAmount * turnSpeed * Time.deltaTime, 0 );
 		}
-
-		/*void OnMouseOverPotentiallyWalkable ( Vector3 destination )
-		{
-			if ( Input.GetMouseButton ( 0 ) )
-			{
-				navMeshAgent.SetDestination ( destination );
-			}
-		}
-
-		void OnMouseOverEnemy ( Enemy enemy )
-		{
-			if ( Input.GetMouseButton( 0 ) || Input.GetMouseButtonDown( 1 ) )
-			{
-				navMeshAgent.SetDestination ( enemy.transform.position );
-			}
-		}*/
 
 		// TODO make this get called again
 		void ProcessDirectMovement ()

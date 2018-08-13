@@ -510,6 +510,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4493345088949890}
   - component: {fileID: 114141520036698414}
+  - component: {fileID: 114232760448907726}
   m_Layer: 0
   m_Name: Default Enemy
   m_TagString: Untagged
@@ -1922,6 +1923,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac3f2762d44a3374a9148f758bae68e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114232760448907726
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1636301745272868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7e639dfa6bb21d409de551ab0604e9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseDamage: 10
+  criticalHitChance: 0.1
+  criticalHitMultiplier: 1.25
+  criticalHitParticle: {fileID: 0}
+  currentWeaponConfig: {fileID: 11400000, guid: 84ef5e3abc6a9394ab759f8c6ce241e7,
+    type: 2}
 --- !u!137 &137780769652331102
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

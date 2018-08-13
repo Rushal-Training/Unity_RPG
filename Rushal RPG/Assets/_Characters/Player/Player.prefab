@@ -206,6 +206,7 @@ GameObject:
   - component: {fileID: 114971019616710268}
   - component: {fileID: 114888799107262436}
   - component: {fileID: 114636771186339974}
+  - component: {fileID: 114347615602146620}
   m_Layer: 11
   m_Name: Player
   m_TagString: Player
@@ -698,7 +699,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33e702bf8d8cafa4e8f4eb9cde89668b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animatorController: {fileID: 0}
+  animatorController: {fileID: 9100000, guid: e2cf68ff4b1ffda45a77f7307dd789b9, type: 2}
   animatorOverrideController: {fileID: 22100000, guid: d450c62c066ca014b8f88f235872e7e1,
     type: 2}
   avatar: {fileID: 9000000, guid: 8d0a57b326030fc44ad6eeab6f398c6a, type: 3}
@@ -712,6 +713,23 @@ MonoBehaviour:
   stationaryTurnSpeed: 900
   navMeshAgentSteeringSpeed: 1
   stoppingDistance: 1.4
+--- !u!114 &114347615602146620
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1601004360757376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7e639dfa6bb21d409de551ab0604e9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseDamage: 10
+  criticalHitChance: 0.1
+  criticalHitMultiplier: 1.25
+  criticalHitParticle: {fileID: 198821876009664704}
+  currentWeaponConfig: {fileID: 11400000, guid: 84ef5e3abc6a9394ab759f8c6ce241e7,
+    type: 2}
 --- !u!114 &114361062150057636
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -769,14 +787,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bad5f7d93c695734da1eefd416a2e65c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseDamage: 10
-  criticalHitChance: 0.1
-  criticalHitMultiplier: 1.25
-  currentWeaponConfig: {fileID: 11400000, guid: 8fffc133bdacf01428eddba91ed12ea0,
-    type: 2}
-  animatorOverrideController: {fileID: 22100000, guid: d450c62c066ca014b8f88f235872e7e1,
-    type: 2}
-  criticalHitParticle: {fileID: 198821876009664704}
 --- !u!137 &137765154713306726
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
