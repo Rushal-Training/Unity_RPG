@@ -62,6 +62,7 @@ namespace RPG.Characters
 
 		public void Heal ( float points )
 		{
+			// todo only if not dead
 			currentHealthPoints = Mathf.Clamp ( currentHealthPoints + points, 0f, maxHealthPoints );
 		}
 
