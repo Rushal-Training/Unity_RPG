@@ -12,6 +12,7 @@ namespace RPG.Characters
 			PlayAbilitySound();
 			DealRadialDamage ( target );
 			PlayParticleEffect ();
+			PlayAbilityAnimation();
 		}
 
 		private void DealRadialDamage ( GameObject target )
@@ -20,11 +21,11 @@ namespace RPG.Characters
 
 			foreach ( var hit in hits )
 			{
-				var enemy = hit.collider.gameObject.GetComponent<Enemy> ();
+				var enemy = hit.collider.gameObject.GetComponent<EnemyAI> ();
 				if ( enemy )
 				{
 					float damageToDeal = ( config as AreaEffectConfig ).GetDamageToEnemies ();
-					enemy.TakeDamage ( damageToDeal );
+					enemy.GetComponent<HealthSystem>().TakeDamage ( damageToDeal );
 				}
 			}
 		}

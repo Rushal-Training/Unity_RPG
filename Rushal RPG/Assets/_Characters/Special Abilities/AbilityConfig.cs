@@ -11,6 +11,7 @@ namespace RPG.Characters
 		[SerializeField] float energyCost = 15f;
 		[SerializeField] GameObject particlePrefab;
 		[SerializeField] AudioClip[] audioClips;
+		[SerializeField] AnimationClip abilityAnimation;
 
 		protected AbilityBehaviour behaviour;
 
@@ -41,6 +42,11 @@ namespace RPG.Characters
 		public void Use ( GameObject target )
 		{
 			behaviour.Use ( target );
+		}
+
+		public AnimationClip GetAbilityAnimation()
+		{
+			return abilityAnimation;
 		}
 	}
 }

@@ -728,8 +728,7 @@ MonoBehaviour:
   criticalHitChance: 0.1
   criticalHitMultiplier: 1.25
   criticalHitParticle: {fileID: 198821876009664704}
-  currentWeaponConfig: {fileID: 11400000, guid: 84ef5e3abc6a9394ab759f8c6ce241e7,
-    type: 2}
+  getCurrentWeapon: {fileID: 11400000, guid: 29edae39f79ab9649be9a8d4ddfec54f, type: 2}
 --- !u!114 &114361062150057636
 MonoBehaviour:
   m_ObjectHideFlags: 1

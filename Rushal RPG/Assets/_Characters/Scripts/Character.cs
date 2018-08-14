@@ -14,7 +14,7 @@ namespace RPG.Characters
 		[SerializeField] Avatar avatar;
 
 		[Header("Audio")]
-		[SerializeField] float audioSourceSpatialBlend = 0.5f;
+		[SerializeField] float audioSourceSpatialBlend = 0;
 
 		[Header ( "Capsule Collider" )]
 		[SerializeField] Vector3 colliderCenter = new Vector3 ( 0, 1f, 0 );
@@ -26,6 +26,7 @@ namespace RPG.Characters
 		[SerializeField] float moveSpeedMultiplier = 1f;
 		[SerializeField] float movingTurnSpeed = 1800f;
 		[SerializeField] float stationaryTurnSpeed = 900f;
+		[SerializeField] float moveThreshold = 1f;
 
 		[Header ( "NavMesh Agent" )]
 		[SerializeField] float navMeshAgentSteeringSpeed = 1.0f;
@@ -37,12 +38,12 @@ namespace RPG.Characters
 
 		float forwardAmount;
 		float turnAmount;
-		float moveThreshold = 1f;
 
 		bool isAlive = true;
 		bool isInDirectMode = false; // TODO consider making static
 
 		public AnimatorOverrideController getOverrideController { get { return animatorOverrideController; } }
+		public float getAnimSpeedMultiplier { get { return animator.speed; } }
 
 		public void SetDestination ( Vector3 worldPos )
 		{

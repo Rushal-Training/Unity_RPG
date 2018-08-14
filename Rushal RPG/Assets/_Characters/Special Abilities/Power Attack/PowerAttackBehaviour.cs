@@ -12,6 +12,7 @@ namespace RPG.Characters
 			PlayAbilitySound();
 			DealDamage ( target );
 			PlayParticleEffect ();
+			PlayAbilityAnimation();
 		}
 
 		private void DealDamage ( GameObject target )
