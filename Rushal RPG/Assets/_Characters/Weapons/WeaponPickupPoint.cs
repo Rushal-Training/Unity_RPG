@@ -42,7 +42,7 @@ namespace RPG.Characters
 
 		private void OnTriggerEnter ( Collider collider )
 		{
-			FindObjectOfType<WeaponSystem>().PutWeaponInHand ( weaponConfig );
+			FindObjectOfType<PlayerControl>().GetComponent<WeaponSystem>().PutWeaponInHand ( weaponConfig );
 			AudioSource.PlayClipAtPoint ( weaponPickupSfx, transform.position );
 		}
 	}

@@ -26,6 +26,7 @@ namespace RPG.Characters
 
 		public void StopAttacking()
 		{
+			animator.StopPlayback ();
 			StopAllCoroutines();
 		}
 
@@ -92,8 +93,10 @@ namespace RPG.Characters
 
 			while ( attackerStillAlive && targetStillAlive )
 			{
-				float weaponHitPeriod = getCurrentWeapon.GetMinTimeBetweenHits();
-				float timeToWait = weaponHitPeriod * character.getAnimSpeedMultiplier;
+
+				var animationClip = currentWeapon.GetAttackAnimClip ();
+				float animationClipTime = animationClip.length / character.getAnimSpeedMultiplier;
+				float timeToWait = animationClipTime * currentWeapon.GetTimeBetweenAnimationCycles();
 
 				bool isTimeToHitAgain = Time.time - lastHitTime > timeToWait;
 
@@ -110,7 +113,7 @@ namespace RPG.Characters
 		{
 			transform.LookAt( target.transform );
 			animator.SetTrigger( ATTACK_TRIGGER );
-			float damageDelay = 1.0f; // todo get from the weapon
+			float damageDelay = currentWeapon.GetDamageDelay ();
 			SetAttackAnimation();
 			StartCoroutine( DamageAfterDelay( damageDelay ) );
 		}
@@ -144,33 +147,11 @@ namespace RPG.Characters
 			return totalDamage;
 		}
 
-		private void AttackTarget ()
-		{
-			/*Vector3 faceTheEnemy = (currentEnemy.transform.position - transform.position);
-			transform.rotation = Quaternion.Slerp ( transform.rotation, Quaternion.LookRotation ( faceTheEnemy ), 0.2f );
-
-			HealthSystem damagableComponent = currentEnemy.GetComponent<HealthSystem> ();
-			if ( damagableComponent && Time.time - lastHitTime > currentWeaponConfig.GetMinTimeBetweenHits () )
-			{
-				SetAttackAnimation ();
-				//animator.SetTrigger ( ATTACK_TRIGGER );
-				damagableComponent.TakeDamage ( CalculateDamage () );
-				lastHitTime = Time.time;
-			}*/
-			
-			if ( Time.time - lastHitTime > getCurrentWeapon.GetMinTimeBetweenHits () )
-			{
-				SetAttackAnimation ();
-				animator.SetTrigger ( ATTACK_TRIGGER );
-				lastHitTime = Time.time;
-			}
-		}
-
 		GameObject RequestDominantHand ()
 		{
 			var dominantHands = GetComponentsInChildren<DominantHand> ();
 			int numberOfDominantHands = dominantHands.Length;
-			Assert.IsFalse ( numberOfDominantHands <= 0, "No dominant hand found on player, please add one." );
+			Assert.IsFalse ( numberOfDominantHands <= 0, "No dominant hand found on " + gameObject.name + ", please add one." );
 			Assert.IsFalse ( numberOfDominantHands > 1, "Multiple dominant hand scripts on player, please remove one." );
 			return dominantHands [0].gameObject;
 		}

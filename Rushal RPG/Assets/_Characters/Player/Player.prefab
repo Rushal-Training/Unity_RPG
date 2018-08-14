@@ -678,7 +678,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1601004360757376}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -233.15242, y: 4.9990845, z: -231.22118}
+  m_LocalPosition: {x: -239.02, y: 4.9990845, z: -245.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4070319021328886}
@@ -709,8 +709,9 @@ MonoBehaviour:
   colliderHeight: 1.85
   animationSpeedMultiplier: 1.2
   moveSpeedMultiplier: 1
-  movingTurnSpeed: 1800
+  movingTurnSpeed: 1000
   stationaryTurnSpeed: 900
+  moveThreshold: 1
   navMeshAgentSteeringSpeed: 1
   stoppingDistance: 1.4
 --- !u!114 &114347615602146620

@@ -42,16 +42,16 @@ namespace RPG.Characters
 
 		IEnumerator KillCharacter ()
 		{
-			StopAllCoroutines ();
 			characterMovement.Kill ();
 			animator.SetTrigger ( DEATH_TRIGGER );
+
+			audioSource.clip = deathSounds [UnityEngine.Random.Range ( 0, deathSounds.Length )];
+			audioSource.Play ();
+			yield return new WaitForSecondsRealtime ( audioSource.clip.length );
 
 			var playerComponent = GetComponent<PlayerControl> ();
 			if ( playerComponent && playerComponent.isActiveAndEnabled )
 			{
-				audioSource.clip = deathSounds [UnityEngine.Random.Range ( 0, deathSounds.Length )];
-				audioSource.Play ();
-				yield return new WaitForSecondsRealtime ( audioSource.clip.length );
 				SceneManager.LoadScene ( 0 );
 			}
 			else

@@ -68,7 +68,10 @@ namespace RPG.Characters
 
 		void UpdateEnergyBar ()
 		{
-			energyBar.fillAmount = energyAsPercent;
+			if( energyBar )
+			{
+				energyBar.fillAmount = energyAsPercent;
+			}
 		}
 
 		void AttachInitialAbilities ()

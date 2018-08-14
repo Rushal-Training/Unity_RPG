@@ -9,17 +9,22 @@ namespace RPG.Characters
 	{
 		public Transform gripTransform;
 
-		[SerializeField] float minTimeBetweeHits = 0.5f;
+		[SerializeField] float timeBetweenAnimationCycles = 0.5f;
 		[SerializeField] float maxAttackRange = 2f;
 		[SerializeField] float additionalDamage = 10f;
+		[SerializeField] float damageDelay = .5f;
 
 		[SerializeField] GameObject weaponPrefab;
 		[SerializeField] AnimationClip attackAnimation;
 
-		public float GetMinTimeBetweenHits ()
+		public float GetDamageDelay()
 		{
-			//TODO consider whether we take animation time into account
-			return minTimeBetweeHits;
+			return damageDelay;
+		}
+
+		public float GetTimeBetweenAnimationCycles ()
+		{
+			return timeBetweenAnimationCycles;
 		}
 
 		public float GetAdditionalDamage ()
